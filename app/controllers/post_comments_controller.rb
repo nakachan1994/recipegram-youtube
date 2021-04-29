@@ -4,8 +4,11 @@ class PostCommentsController < ApplicationController
     comment = PostComment.new(post_comment_params)
     comment.user_id = current_user.id
     comment.recipe_id = recipe.id
-    comment.save
-    redirect_to recipe_path(recipe)
+    if comment.save
+      redirect_to recipe_path(recipe), notice: 'コメントをつけました。'
+    else
+      redirect_to recipe_path(recipe), flash: {alert:'コメントに失敗しました'}
+    end
   end
 
   def destroy
